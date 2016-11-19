@@ -1,6 +1,6 @@
 package com.example.spring.boot.exception;
 
-public class StudentNotFoundException extends Exception {
+public class ResourceNotFoundException extends Exception {
 	/**
 	 * 
 	 */
@@ -8,11 +8,11 @@ public class StudentNotFoundException extends Exception {
 
 	private String message;
 
-	public StudentNotFoundException() {
+	public ResourceNotFoundException() {
 		
 	}
 
-	public StudentNotFoundException(String message) {
+	public ResourceNotFoundException(String message) {
 		this.message = message;
 	}
 

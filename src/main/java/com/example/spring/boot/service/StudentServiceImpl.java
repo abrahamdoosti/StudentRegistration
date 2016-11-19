@@ -7,8 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.example.spring.boot.StudentDAO.StudentDAO;
-import com.example.spring.boot.exception.DuplicateStudentException;
-import com.example.spring.boot.exception.StudentNotFoundException;
+import com.example.spring.boot.exception.DuplicateResourceException;
+import com.example.spring.boot.exception.ResourceNotFoundException;
 import com.example.spring.boot.model.Student;
 
 @Service
@@ -18,28 +18,28 @@ public class StudentServiceImpl implements StudentService {
 	private StudentDAO studentDAOImpl;
 
 	@Override
-	public ResponseEntity<Student> getStudent(int id) throws StudentNotFoundException {
+	public ResponseEntity<Student> getStudent(int id) throws ResourceNotFoundException {
 		Student student = studentDAOImpl.getStudent(id);
 		if (student == null) 
-			throw new StudentNotFoundException("Student is not Found!");
+			throw new ResourceNotFoundException("Student is not Found!");
 		
 		return new ResponseEntity<Student>(student, HttpStatus.FOUND);
 	}
 
 	@Override
-	public ResponseEntity<List<Student>> getAllStudents() throws StudentNotFoundException {
+	public ResponseEntity<List<Student>> getAllStudents() throws ResourceNotFoundException {
 		if(studentDAOImpl.getAllStudents().isEmpty())
-			throw new StudentNotFoundException("No Students found");
+			throw new ResourceNotFoundException("No Students found");
 		return new ResponseEntity<List<Student>>( studentDAOImpl.getAllStudents(),HttpStatus.OK);
 	}
 
 	@Override
-	public ResponseEntity<Student> registerStudent(Student student) throws DuplicateStudentException {
+	public ResponseEntity<Student> registerStudent(Student student) throws DuplicateResourceException {
 		Student existingStudent = studentDAOImpl.getStudent(student.getId());
 		if (existingStudent == null) {
 			return new ResponseEntity<Student>(studentDAOImpl.saveStudent(student), HttpStatus.CREATED);
 		}
-		throw new DuplicateStudentException("this student is duplicate");
+		throw new DuplicateResourceException("this student is duplicate");
 		
 	}
 

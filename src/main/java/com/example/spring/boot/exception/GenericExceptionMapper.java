@@ -20,14 +20,14 @@ public class GenericExceptionMapper extends ResponseEntityExceptionHandler {
 				HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
-	@ExceptionHandler(value = { DuplicateStudentException.class })
+	@ExceptionHandler(value = { DuplicateResourceException.class })
 	protected ResponseEntity<ExceptionEntity> handleDuplicateStudentException(Exception ex, WebRequest request) {
 		 //LOGGER.error(ex.getMessage(), ex);
 		return handleException(ex.getMessage(), HttpStatus.CONFLICT);
 	}	
 	
 	//handler for StudentNotFoundException thrown by the controller.
-	@ExceptionHandler(value = { StudentNotFoundException.class })
+	@ExceptionHandler(value = { ResourceNotFoundException.class })
 	protected ResponseEntity<ExceptionEntity> handleNotFoundException(Exception ex, WebRequest request) {
 		 //LOGGER.error(ex.getMessage(), ex);
 		return handleException(ex.getMessage(), HttpStatus.NOT_FOUND);

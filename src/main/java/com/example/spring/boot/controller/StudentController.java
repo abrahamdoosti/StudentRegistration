@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.spring.boot.exception.DuplicateStudentException;
-import com.example.spring.boot.exception.StudentNotFoundException;
+import com.example.spring.boot.exception.DuplicateResourceException;
+import com.example.spring.boot.exception.ResourceNotFoundException;
 import com.example.spring.boot.model.Student;
 import com.example.spring.boot.service.StudentService;
 
@@ -24,17 +24,17 @@ public class StudentController {
 	private StudentService studentService;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ResponseEntity<List<Student>> getAllStudents() throws StudentNotFoundException {
+	public ResponseEntity<List<Student>> getAllStudents() throws ResourceNotFoundException {
 		return  studentService.getAllStudents();
 	}
 
 	@RequestMapping(value = "/{studentId}", method = RequestMethod.GET)
-	public ResponseEntity<Student> getStudent(@PathVariable("studentId") final int id) throws StudentNotFoundException {
+	public ResponseEntity<Student> getStudent(@PathVariable("studentId") final int id) throws ResourceNotFoundException {
 		return studentService.getStudent(id);
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Student> createStudent(@RequestBody final Student student) throws  DuplicateStudentException {
+	public ResponseEntity<Student> createStudent(@RequestBody final Student student) throws  DuplicateResourceException {
 		return studentService.registerStudent(student);
 	}
 	
