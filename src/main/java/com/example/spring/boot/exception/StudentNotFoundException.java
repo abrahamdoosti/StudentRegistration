@@ -1,15 +1,18 @@
 package com.example.spring.boot.exception;
 
-public class StudentException extends Exception {
+public class StudentNotFoundException extends Exception {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private String message;
 
-	public StudentException() {
-
+	public StudentNotFoundException() {
+		
 	}
 
-	public StudentException(String message) {
-
+	public StudentNotFoundException(String message) {
 		this.message = message;
 	}
 
@@ -20,4 +23,5 @@ public class StudentException extends Exception {
 	public void setMessage(String message) {
 		this.message = message;
 	}
+
 }

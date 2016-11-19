@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.spring.boot.exception.StudentException;
+import com.example.spring.boot.exception.DuplicateStudentException;
+import com.example.spring.boot.exception.StudentNotFoundException;
 import com.example.spring.boot.model.Student;
 import com.example.spring.boot.service.StudentService;
 
@@ -23,27 +24,28 @@ public class StudentController {
 	private StudentService studentService;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public List<Student> getAllStudents() {
-		return (List<Student>) studentService.getAllStudents();
+	public ResponseEntity<List<Student>> getAllStudents() throws StudentNotFoundException {
+		return  studentService.getAllStudents();
 	}
 
 	@RequestMapping(value = "/{studentId}", method = RequestMethod.GET)
-	public Student getStudent(@PathVariable("studentId") int id) {
+	public ResponseEntity<Student> getStudent(@PathVariable("studentId") final int id) throws StudentNotFoundException {
 		return studentService.getStudent(id);
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Student> createStudent(@RequestBody Student student) throws StudentException {
+	public ResponseEntity<Student> createStudent(@RequestBody final Student student) throws  DuplicateStudentException {
 		return studentService.registerStudent(student);
 	}
 	
-	@RequestMapping(value = "/", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Student> updateStudent(@RequestBody Student student) {
+	@RequestMapping(value = "/{studentId}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Student> updateStudent(@RequestBody final Student student,@PathVariable("studentId") final int studentId) {
+		student.setId(studentId);
 		return studentService.updateStudent(student);
 	}
 	
 	@RequestMapping(value = "/{studentId}", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Student> deleteStudent(@PathVariable("studentId") int id) {
+	public ResponseEntity<Student> deleteStudent(@PathVariable("studentId") final int id) {		
 		return studentService.unregisterStudent(id);
 	}
 
