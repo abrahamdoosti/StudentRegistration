@@ -29,24 +29,23 @@ public class StudentController {
 	}
 
 	@RequestMapping(value = "/{studentId}", method = RequestMethod.GET)
-	public ResponseEntity<Student> getStudent(@PathVariable("studentId") int id) throws StudentNotFoundException {
+	public ResponseEntity<Student> getStudent(@PathVariable("studentId") final int id) throws StudentNotFoundException {
 		return studentService.getStudent(id);
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Student> createStudent(@RequestBody Student student) throws  DuplicateStudentException {
+	public ResponseEntity<Student> createStudent(@RequestBody final Student student) throws  DuplicateStudentException {
 		return studentService.registerStudent(student);
 	}
 	
 	@RequestMapping(value = "/{studentId}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Student> updateStudent(@RequestBody Student student,@PathVariable("studentId") int studentId) {
+	public ResponseEntity<Student> updateStudent(@RequestBody final Student student,@PathVariable("studentId") final int studentId) {
 		student.setId(studentId);
 		return studentService.updateStudent(student);
 	}
 	
 	@RequestMapping(value = "/{studentId}", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Student> deleteStudent(@PathVariable("studentId") int id) {
-		
+	public ResponseEntity<Student> deleteStudent(@PathVariable("studentId") final int id) {		
 		return studentService.unregisterStudent(id);
 	}
 
