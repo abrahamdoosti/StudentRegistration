@@ -1,8 +1,6 @@
 package com.example.spring.boot.exception;
 
-import com.example.spring.boot.model.ExceptionEntity;
-
-public class DuplicateStudentException extends Exception{
+public class DuplicateResourceException extends Exception{
 	/**
 	 * 
 	 */
@@ -10,10 +8,10 @@ public class DuplicateStudentException extends Exception{
 	
 	private String message;
 
-	public DuplicateStudentException() {
+	public DuplicateResourceException() {
 	}
 
-	public DuplicateStudentException(String errorMessage) {
+	public DuplicateResourceException(String errorMessage) {
 
 		this.message = errorMessage;
 	}
