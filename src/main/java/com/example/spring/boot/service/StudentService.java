@@ -16,7 +16,7 @@ public interface StudentService {
 
 	public ResponseEntity<Student> registerStudent(Student student) throws DuplicateResourceException ;
 
-	public ResponseEntity<Student> updateStudent(Student student) ;
+	public ResponseEntity<Student> updateStudent(int id, Student student) ;
 
 	public ResponseEntity<Student> unregisterStudent(int id);
 
