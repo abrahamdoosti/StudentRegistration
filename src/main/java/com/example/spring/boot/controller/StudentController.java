@@ -23,7 +23,7 @@ public class StudentController {
 	@Autowired	
 	private StudentService studentService;
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<Student>> getAllStudents() throws ResourceNotFoundException {
 		return  studentService.getAllStudents();
 	}
@@ -33,27 +33,19 @@ public class StudentController {
 		return studentService.getStudent(id);
 	}
 
-	@RequestMapping(value = "/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Student> createStudent(@RequestBody final Student student) throws  DuplicateResourceException {
 		return studentService.registerStudent(student);
 	}
 	
 	@RequestMapping(value = "/{studentId}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Student> updateStudent(@RequestBody final Student student,@PathVariable("studentId") final int studentId) {
-		student.setId(studentId);
-		return studentService.updateStudent(student);
+		return studentService.updateStudent(studentId, student);
 	}
 	
 	@RequestMapping(value = "/{studentId}", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Student> deleteStudent(@PathVariable("studentId") final int id) {		
 		return studentService.unregisterStudent(id);
-	}
-
-
-	@RequestMapping(value = "/hi", method = RequestMethod.GET)
-	public String getStudenta() {
-		String name = "abebe";
-		return "Hi" + name;
 	}
 
 }

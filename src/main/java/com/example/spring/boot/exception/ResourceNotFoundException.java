@@ -11,6 +11,13 @@ public class ResourceNotFoundException extends Exception {
 	public ResourceNotFoundException() {
 		
 	}
+	
+	@SuppressWarnings("rawtypes")
+	public ResourceNotFoundException(Class targetClass) {
+		if(targetClass != null){
+			this.message = targetClass.getSimpleName() +  " Not Found";
+		}
+	}
 
 	public ResourceNotFoundException(String message) {
 		this.message = message;

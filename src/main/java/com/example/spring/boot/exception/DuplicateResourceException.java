@@ -10,6 +10,13 @@ public class DuplicateResourceException extends Exception{
 
 	public DuplicateResourceException() {
 	}
+	
+	@SuppressWarnings("rawtypes")
+	public DuplicateResourceException(Class targetClass) {
+		if(targetClass != null){
+			this.message = targetClass.getSimpleName() + " Already Exists";
+		}	
+	}
 
 	public DuplicateResourceException(String errorMessage) {
 

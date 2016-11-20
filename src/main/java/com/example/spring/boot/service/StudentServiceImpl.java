@@ -15,11 +15,11 @@ import com.example.spring.boot.model.Student;
 public class StudentServiceImpl implements StudentService {
 
 	@Autowired
-	private StudentDAO studentDAOImpl;
+	private StudentDAO studentDAO;
 
 	@Override
 	public ResponseEntity<Student> getStudent(int id) throws ResourceNotFoundException {
-		Student student = studentDAOImpl.getStudent(id);
+		Student student = studentDAO.getStudent(id);
 		if (student == null) 
 			throw new ResourceNotFoundException("Student is not Found!");
 		
@@ -28,29 +28,30 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public ResponseEntity<List<Student>> getAllStudents() throws ResourceNotFoundException {
-		if(studentDAOImpl.getAllStudents().isEmpty())
+		if(studentDAO.getAllStudents().isEmpty())
 			throw new ResourceNotFoundException("No Students found");
-		return new ResponseEntity<List<Student>>( studentDAOImpl.getAllStudents(),HttpStatus.OK);
+		return new ResponseEntity<List<Student>>( studentDAO.getAllStudents(),HttpStatus.OK);
 	}
 
 	@Override
 	public ResponseEntity<Student> registerStudent(Student student) throws DuplicateResourceException {
-		Student existingStudent = studentDAOImpl.getStudent(student.getId());
+		Student existingStudent = studentDAO.getStudent(student.getId());
 		if (existingStudent == null) {
-			return new ResponseEntity<Student>(studentDAOImpl.saveStudent(student), HttpStatus.CREATED);
+			return new ResponseEntity<Student>(studentDAO.saveStudent(student), HttpStatus.CREATED);
 		}
 		throw new DuplicateResourceException("this student is duplicate");
 		
 	}
 
 	@Override
-	public ResponseEntity<Student> updateStudent(Student student) {
-		return new ResponseEntity<Student>(studentDAOImpl.updateStudent(student), HttpStatus.OK);
+	public ResponseEntity<Student> updateStudent(int id, Student student) {
+		student.setId(id);
+		return new ResponseEntity<Student>(studentDAO.updateStudent(student), HttpStatus.OK);
 	}
 
 	@Override
 	public ResponseEntity<Student> unregisterStudent(int id) {
-		return new ResponseEntity<Student>(studentDAOImpl.deleteStudent(id), HttpStatus.NO_CONTENT);
+		return new ResponseEntity<Student>(studentDAO.deleteStudent(id), HttpStatus.NO_CONTENT);
 	}
 
 }
