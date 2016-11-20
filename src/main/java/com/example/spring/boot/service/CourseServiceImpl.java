@@ -23,7 +23,7 @@ public class CourseServiceImpl implements CourseService {
 	public ResponseEntity<Course> getCourse(int id) throws ResourceNotFoundException {
 		Course Course = courseDAO.getCourse(id);
 		if (Course == null) 
-			throw new ResourceNotFoundException("Course is not Found!");
+			throw new ResourceNotFoundException(Course.class);
 		
 		return new ResponseEntity<Course>(Course, HttpStatus.FOUND);
 	}
@@ -31,7 +31,7 @@ public class CourseServiceImpl implements CourseService {
 	@Override
 	public ResponseEntity<List<Course>> getAllCourses() throws ResourceNotFoundException {
 		if(courseDAO.getAllCourses().isEmpty())
-			throw new ResourceNotFoundException("No Courses found");
+			throw new ResourceNotFoundException(Course.class);
 		return new ResponseEntity<List<Course>>(courseDAO.getAllCourses(),HttpStatus.OK);
 	}
 

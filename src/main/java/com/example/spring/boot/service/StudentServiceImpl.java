@@ -21,7 +21,7 @@ public class StudentServiceImpl implements StudentService {
 	public ResponseEntity<Student> getStudent(int id) throws ResourceNotFoundException {
 		Student student = studentDAO.getStudent(id);
 		if (student == null) 
-			throw new ResourceNotFoundException("Student is not Found!");
+			throw new ResourceNotFoundException(Student.class);
 		
 		return new ResponseEntity<Student>(student, HttpStatus.FOUND);
 	}
@@ -29,7 +29,7 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public ResponseEntity<List<Student>> getAllStudents() throws ResourceNotFoundException {
 		if(studentDAO.getAllStudents().isEmpty())
-			throw new ResourceNotFoundException("No Students found");
+			throw new ResourceNotFoundException(Student.class);
 		return new ResponseEntity<List<Student>>( studentDAO.getAllStudents(),HttpStatus.OK);
 	}
 
