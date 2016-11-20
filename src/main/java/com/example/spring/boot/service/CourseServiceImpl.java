@@ -45,8 +45,16 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	@Override
-	public ResponseEntity<Course> updateCourse(int id, Course course) {
+	public ResponseEntity<Course> updateCourse(int id, Course course) throws ResourceNotFoundException, DuplicateResourceException {
 		course.setCourseID(id);
+		Course oldCourse=courseDAO.getCourse(id);
+		if(oldCourse==null){
+			throw new ResourceNotFoundException(Course.class);
+		}
+		else if(courseDAO.getAllCourses().contains(course)){
+			throw new DuplicateResourceException(Course.class);
+		}
+		
 		return new ResponseEntity<Course>(courseDAO.updateCourse(course), HttpStatus.OK);
 	}
 

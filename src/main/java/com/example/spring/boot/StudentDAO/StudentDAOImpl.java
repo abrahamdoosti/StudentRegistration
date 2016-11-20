@@ -32,9 +32,9 @@ public class StudentDAOImpl implements StudentDAO {
 	@Override
 	public Student saveStudent(Student student) {
 		// TODO Auto-generated method stub
-		long index=(long)(studentMap.size());
-		long key = (long) (studentMap.get(index).getId());
-		studentMap.put(key+1, student);
+		int size=(studentMap.size());		
+		student.setId(size+1);
+		studentMap.put((long)(size+1), student);
 		return student;
 
 	}

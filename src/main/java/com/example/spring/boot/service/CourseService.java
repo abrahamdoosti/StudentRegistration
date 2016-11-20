@@ -16,7 +16,7 @@ public interface CourseService {
 
 	public ResponseEntity<Course> registerCourse(Course course) throws DuplicateResourceException ;
 
-	public ResponseEntity<Course> updateCourse(int id, Course course) ;
+	public ResponseEntity<Course> updateCourse(int id, Course course) throws ResourceNotFoundException, DuplicateResourceException ;
 
 	public ResponseEntity<Course> removeCourse(int id) throws ResourceNotFoundException;
 }

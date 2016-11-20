@@ -40,7 +40,7 @@ public class CourseController {
 	}
 	
 	@RequestMapping(value = "/{CourseId}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Course> updateCourse(@RequestBody final Course Course,@PathVariable("CourseId") final int CourseId) {
+	public ResponseEntity<Course> updateCourse(@RequestBody final Course Course,@PathVariable("CourseId") final int CourseId) throws ResourceNotFoundException, DuplicateResourceException {
 		return courseService.updateCourse(CourseId, Course);
 	}
 	

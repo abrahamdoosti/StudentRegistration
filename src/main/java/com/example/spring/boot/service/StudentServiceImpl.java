@@ -34,18 +34,24 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public ResponseEntity<Student> registerStudent(Student student) throws DuplicateResourceException {
-		Student existingStudent = studentDAO.getStudent(student.getId());
-		if (existingStudent == null) {
+	public ResponseEntity<Student> registerStudent(Student student) throws DuplicateResourceException {		
+		if (!studentDAO.getAllStudents().contains(student)) {
 			return new ResponseEntity<Student>(studentDAO.saveStudent(student), HttpStatus.CREATED);
 		}
-		throw new DuplicateResourceException("this student is duplicate");
+		throw new DuplicateResourceException(Student.class);
 		
 	}
 
 	@Override
-	public ResponseEntity<Student> updateStudent(int id, Student student) {
+	public ResponseEntity<Student> updateStudent(int id, Student student) throws ResourceNotFoundException,DuplicateResourceException {
 		student.setId(id);
+		Student oldStudent=studentDAO.getStudent(student.getId());
+		if(oldStudent==null){
+			throw new ResourceNotFoundException(Student.class);
+		}
+		else if(studentDAO.getAllStudents().contains(student)){
+			throw new DuplicateResourceException(Student.class);
+		}
 		return new ResponseEntity<Student>(studentDAO.updateStudent(student), HttpStatus.OK);
 	}
 
