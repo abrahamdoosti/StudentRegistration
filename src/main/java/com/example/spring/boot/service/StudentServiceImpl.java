@@ -44,8 +44,8 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public ResponseEntity<Student> updateStudent(int id, Student student) throws ResourceNotFoundException,DuplicateResourceException {
-		student.setId(id);
-		Student oldStudent=studentDAO.getStudent(student.getId());
+		student.setStudent_id(id);
+		Student oldStudent=studentDAO.getStudent(student.getStudent_id());
 		if(oldStudent==null){
 			throw new ResourceNotFoundException(Student.class);
 		}
