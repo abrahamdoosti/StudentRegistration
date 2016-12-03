@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.spring.boot.exception.DuplicateResourceException;
@@ -24,12 +25,13 @@ public class StudentController {
 	private StudentService studentService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<Student>> getAllStudents() throws ResourceNotFoundException {
-		return  studentService.getAllStudents();
+	public ResponseEntity<List<Student>> getAllStudents(@RequestParam(required=false) final String firstName,
+			@RequestParam(required = false) final String lastName) throws ResourceNotFoundException {
+		return  studentService.getAllStudents(firstName, lastName);
 	}
 
 	@RequestMapping(value = "/{studentId}", method = RequestMethod.GET)
-	public ResponseEntity<Student> getStudent(@PathVariable("studentId") final int id) throws ResourceNotFoundException {
+	public ResponseEntity<Student> getStudent(@PathVariable("studentId") final Long id) throws ResourceNotFoundException {
 		return studentService.getStudent(id);
 	}
 
@@ -39,12 +41,12 @@ public class StudentController {
 	}
 	
 	@RequestMapping(value = "/{studentId}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Student> updateStudent(@RequestBody Student student,@PathVariable("studentId") final int studentId) {
+	public ResponseEntity<Student> updateStudent(@RequestBody Student student,@PathVariable("studentId") final Long studentId) {
 		return studentService.updateStudent(studentId, student);
 	}
 	
 	@RequestMapping(value = "/{studentId}", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Student> deleteStudent(@PathVariable("studentId") final int id) {		
+	public ResponseEntity<Student> deleteStudent(@PathVariable("studentId") final Long id) {		
 		return studentService.unregisterStudent(id);
 	}
 

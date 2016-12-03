@@ -5,13 +5,19 @@ import java.util.List;
 import com.example.spring.boot.model.Student;
 
 public interface StudentDAO {
-	public Student getStudent(int id);
+	public Student findOne(Long id);
 
-	public List<Student> getAllStudents();
+	public List<Student> findAll();
 
-	public Student saveStudent(Student student);
+	public Student save(Student student);
 
 	public Student updateStudent(Student student);
 
-	public Student deleteStudent(int id);
+	public void delete(Long id);
+
+	List<Student> findByFirstName(String firstName);
+
+	List<Student> findByLastName(String firstName);
+
+	List<Student> findByFirstNameAndLastName(String firstName, String lastName);
 }
