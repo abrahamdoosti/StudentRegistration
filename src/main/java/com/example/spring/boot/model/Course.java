@@ -5,7 +5,7 @@ public class Course {
 	private int courseID;
 	private String courseCode;
 	private String courseName;
-	private int creaditHours;
+	private int creditHours;
 	private String description;
 
 	public Course() {
@@ -17,7 +17,7 @@ public class Course {
 		this.courseID = courseID;
 		this.courseCode = courseCode;
 		this.courseName = courseName;
-		this.creaditHours = creaditHours;
+		this.creditHours = creaditHours;
 		this.description = description;
 	}
 
@@ -25,7 +25,7 @@ public class Course {
 		super();
 		this.courseCode = courseCode;
 		this.courseName = courseName;
-		this.creaditHours = creaditHours;
+		this.creditHours = creaditHours;
 		this.description = description;
 	}
 
@@ -53,12 +53,12 @@ public class Course {
 		this.courseName = courseName;
 	}
 
-	public int getCreaditHours() {
-		return creaditHours;
+	public int getCreditHours() {
+		return creditHours;
 	}
 
-	public void setCreaditHours(int creaditHours) {
-		this.creaditHours = creaditHours;
+	public void setCreditHours(int creaditHours) {
+		this.creditHours = creaditHours;
 	}
 
 	public String getDescription() {
@@ -75,7 +75,7 @@ public class Course {
 		int result = 1;
 		result = prime * result + ((courseCode == null) ? 0 : courseCode.hashCode());
 		result = prime * result + ((courseName == null) ? 0 : courseName.hashCode());
-		result = prime * result + creaditHours;
+		result = prime * result + creditHours;
 		return result;
 	}
 
@@ -98,7 +98,7 @@ public class Course {
 				return false;
 		} else if (!courseName.equals(other.courseName))
 			return false;
-		if (creaditHours != other.creaditHours)
+		if (creditHours != other.creditHours)
 			return false;
 		return true;
 	}

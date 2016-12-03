@@ -10,6 +10,7 @@ import com.example.spring.boot.model.Course;
 
 
 public interface CourseService {
+	
 	public ResponseEntity<Course> getCourse(int id) throws ResourceNotFoundException;
 
 	public ResponseEntity<List<Course>> getAllCourses() throws ResourceNotFoundException;
