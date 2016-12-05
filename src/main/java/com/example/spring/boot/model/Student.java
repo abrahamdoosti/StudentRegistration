@@ -3,6 +3,7 @@ package com.example.spring.boot.model;
 import java.util.Date;
 
 import javax.annotation.Generated;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,12 +15,13 @@ public class Student {
 	
 	@Id 
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long studentId;
+	private Long studentId;	
 	private String address;
 	private Date dateOfBirth;
 	private String mobileNo;
 	private String nationality;
 	private String phone;
+	@Column(nullable=false)
 	private String firstName;
 	private String lastName;
 	
