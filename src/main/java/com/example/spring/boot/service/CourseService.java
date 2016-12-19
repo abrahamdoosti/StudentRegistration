@@ -18,5 +18,5 @@ public interface CourseService {
 
 	public ResponseEntity<Course> updateCourse(int id, Course course) ;
 
-	public ResponseEntity<Course> removeCourse(int id) throws ResourceNotFoundException;
+	public ResponseEntity<Void> removeCourse(int id) throws ResourceNotFoundException;
 }

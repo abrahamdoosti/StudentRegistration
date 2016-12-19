@@ -1,13 +1,36 @@
 package com.example.spring.boot.model;
 
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="tbl_course")
 public class Course {
-
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="course_id")
 	private int courseID;
+	@Column(name="course_code")
 	private String courseCode;
+	@Column(name="course_name")
 	private String courseName;
+	@Column(name="creadit_hours")
 	private int creaditHours;
+	@Column(name="description")
 	private String description;
-
+	
+	@OneToMany(fetch=FetchType.LAZY,mappedBy="course")
+	private List<StudentCourseSemesterGrade> studentCourseSemesterGrade;
+	
 	public Course() {
 
 	}
@@ -67,6 +90,15 @@ public class Course {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+
+	public List<StudentCourseSemesterGrade> getStudentCourseSemesterGrade() {
+		return studentCourseSemesterGrade;
+	}
+
+	public void setStudentCourseSemesterGrade(List<StudentCourseSemesterGrade> studentCourseSemesterGrade) {
+		this.studentCourseSemesterGrade = studentCourseSemesterGrade;
 	}
 
 	@Override

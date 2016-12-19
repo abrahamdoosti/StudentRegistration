@@ -11,10 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
+import com.example.spring.boot.DTO.StudentDto;
 import com.example.spring.boot.exception.DuplicateResourceException;
 import com.example.spring.boot.exception.ResourceNotFoundException;
 import com.example.spring.boot.model.Student;
+import com.example.spring.boot.model.StudentCourseSemesterGrade;
 import com.example.spring.boot.service.StudentService;
 
 @RestController
@@ -25,13 +28,12 @@ public class StudentController {
 	private StudentService studentService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<Student>> getAllStudents(@RequestParam(required=false) final String firstName,
-			@RequestParam(required = false) final String lastName) throws ResourceNotFoundException {
-		return  studentService.getAllStudents(firstName, lastName);
+	public ResponseEntity<List<Student>> getAllStudents() throws ResourceNotFoundException {
+		return  studentService.getAllStudents();
 	}
 
 	@RequestMapping(value = "/{studentId}", method = RequestMethod.GET)
-	public ResponseEntity<Student> getStudent(@PathVariable("studentId") final Long id) throws ResourceNotFoundException {
+	public ResponseEntity<StudentDto> getStudent(@PathVariable("studentId") final Long id) throws ResourceNotFoundException {
 		return studentService.getStudent(id);
 	}
 
@@ -41,13 +43,19 @@ public class StudentController {
 	}
 	
 	@RequestMapping(value = "/{studentId}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Student> updateStudent(@RequestBody Student student,@PathVariable("studentId") final Long studentId) {
+	public ResponseEntity<Student> updateStudent(@RequestBody Student student,@PathVariable("studentId")  final Long studentId) {
 		return studentService.updateStudent(studentId, student);
 	}
 	
 	@RequestMapping(value = "/{studentId}", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Student> deleteStudent(@PathVariable("studentId") final Long id) {		
+	public ResponseEntity<Void> deleteStudent(@PathVariable("studentId") final Long id) throws ResourceNotFoundException {		
 		return studentService.unregisterStudent(id);
 	}
+	
+	@RequestMapping(value = "/{studentId}/scsg", method = RequestMethod.GET)
+	public StudentCourseSemesterGrade getStudentCourseSemesterGrade(@PathVariable("studentId") final Long studentId) throws ResourceNotFoundException {
+		return new RestTemplate().getForObject("http://localhost:8080/studentRegistration/std/"+studentId, StudentCourseSemesterGrade.class);
+	}
+
 
 }

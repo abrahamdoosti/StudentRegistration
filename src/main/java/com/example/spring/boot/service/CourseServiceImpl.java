@@ -6,14 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.example.spring.boot.StudentDAO.CourseDAO;
+import com.example.spring.boot.DAO.CourseDAO;
 import com.example.spring.boot.exception.DuplicateResourceException;
 import com.example.spring.boot.exception.ResourceNotFoundException;
 import com.example.spring.boot.model.Course;
 import com.example.spring.boot.model.Course;
 
 @Service
+@Transactional
 public class CourseServiceImpl implements CourseService {
 
 	@Autowired
@@ -51,10 +53,10 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	@Override
-	public ResponseEntity<Course> removeCourse(int id) throws ResourceNotFoundException {
-		if(courseDAO.deleteCourse(id) == null)
+	public ResponseEntity<Void> removeCourse(int id) throws ResourceNotFoundException {
+		if(courseDAO.getCourse(id) == null)
 			throw new ResourceNotFoundException("Course was not found, please check key"); 
-		return new ResponseEntity<Course>(courseDAO.deleteCourse(id), HttpStatus.NO_CONTENT);
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 	
 }

@@ -1,35 +1,58 @@
 package com.example.spring.boot.model;
 
 import java.util.Date;
+import java.util.List;
 
-import javax.annotation.Generated;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
-import org.jooq.util.jaxb.Strategy;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
+@Table(name = "tbl_student")
 public class Student {
-	
-	@Id 
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long studentId;	
-	private String address;
-	private Date dateOfBirth;
-	private String mobileNo;
-	private String nationality;
-	private String phone;
-	@Column(nullable=false)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "student_id")
+	private Long studentId;
+	@Column(name = "first_name")
 	private String firstName;
+	@Column(name = "last_name")
 	private String lastName;
+	@Column(name = "address")
+	private String address;
+	@Column(name = "date_of_birth")	
+	@Temporal(TemporalType.TIMESTAMP)
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT-5")
+	private Date dateOfBirth; 
+	@Column(name = "cellphone_no")
+	private String mobileNo;
+	@Column(name = "nationality")
+	private String nationality;
+	@Column(name = "phone_no")
+	private String phone;
+	
+	@OneToMany(fetch=FetchType.LAZY,mappedBy="student")
+	@Cascade({CascadeType.DELETE})
+	private List<StudentCourseSemesterGrade> studentCourseSemesterGrade;
+
 	
 
 	public Student() {
 
 	}
-	
+
 	public Student(Long studentId, String firstName, String lastName) {
 		super();
 		this.studentId = studentId;
@@ -67,7 +90,11 @@ public class Student {
 	}
 
 	public Date getDateOfBirth() {
+		//String pattern = "yyyy-MM-dd";
+		//SimpleDateFormat sdf=new SimpleDateFormat(pattern);
+		//Date sqlDate=new java.sql.Date(dateOfBirth.getTime());		
 		return dateOfBirth;
+		
 	}
 
 	public void setDateOfBirth(Date dateOfBirth) {
@@ -113,6 +140,14 @@ public class Student {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+	
+	public List<StudentCourseSemesterGrade> getStudentCourseSemesterGrade() {
+		return studentCourseSemesterGrade;
+	}
+
+	public void setStudentCourseSemesterGrade(List<StudentCourseSemesterGrade> studentCourseSemesterGrade) {
+		this.studentCourseSemesterGrade = studentCourseSemesterGrade;
+	}
 
 	@Override
 	public int hashCode() {
@@ -125,7 +160,6 @@ public class Student {
 		return result;
 	}
 
-	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -158,14 +192,11 @@ public class Student {
 		return true;
 	}
 
-
-
 	@Override
 	public String toString() {
 		return "Student [studentId=" + studentId + ", address=" + address + ", dateOfBirth=" + dateOfBirth
 				+ ", mobileNo=" + mobileNo + ", nationality=" + nationality + ", phone=" + phone + ", firstName="
 				+ firstName + ", lastName=" + lastName + "]";
 	}
-
 
 }

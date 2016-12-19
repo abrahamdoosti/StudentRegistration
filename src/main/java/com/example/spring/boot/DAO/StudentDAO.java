@@ -1,11 +1,11 @@
-package com.example.spring.boot.StudentDAO;
+package com.example.spring.boot.DAO;
 
 import java.util.List;
 
 import com.example.spring.boot.model.Student;
 
 public interface StudentDAO {
-	public Student findOne(Long id);
+	public Student getStudent(Long id);
 
 	public List<Student> findAll();
 
@@ -15,9 +15,5 @@ public interface StudentDAO {
 
 	public void delete(Long id);
 
-	List<Student> findByFirstName(String firstName);
-
-	List<Student> findByLastName(String firstName);
-
-	List<Student> findByFirstNameAndLastName(String firstName, String lastName);
+	
 }

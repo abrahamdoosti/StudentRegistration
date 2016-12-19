@@ -45,7 +45,7 @@ public class CourseController {
 	}
 	
 	@RequestMapping(value = "/{CourseId}", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Course> deleteCourse(@PathVariable("CourseId") final int id) throws ResourceNotFoundException {		
+	public ResponseEntity<Void> deleteCourse(@PathVariable("CourseId") final int id) throws ResourceNotFoundException {		
 		return courseService.removeCourse(id);
 	}
 
