@@ -16,7 +16,7 @@ import com.example.spring.boot.model.Student;
 public class StudentServiceImpl implements StudentService {
 
 	@Autowired
-	private StudentDAO studentRepository;
+	private StudentRepository studentRepository;
 
 	@Override
 	public ResponseEntity<Student> getStudent(Long id) throws ResourceNotFoundException {
