@@ -1,10 +1,7 @@
 package com.example.spring.boot.controller;
 
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -27,7 +24,7 @@ import com.example.spring.boot.config.AdminConfig;
 import com.example.spring.boot.exception.DuplicateResourceException;
 import com.example.spring.boot.exception.ResourceNotFoundException;
 import com.example.spring.boot.model.Student;
-import com.example.spring.boot.model.StudentCourseSemesterGrade;
+
 import com.example.spring.boot.service.StudentService;
 
 @RestController
@@ -65,15 +62,14 @@ public class StudentController {
 		return studentService.unregisterStudent(id);
 	}
 
-	@RequestMapping(value = "/{studentId}/scsg", method = RequestMethod.GET)
+	@RequestMapping(value = "/{studentId}/courseGrade", method = RequestMethod.GET)
 	public ResponseEntity<List<StudentCourseSemesterGradeDto>> getStudentCourseSemesterGrade(
 			@PathVariable("studentId") final Long studentId) throws ResourceNotFoundException {
-		ResponseEntity<List<StudentCourseSemesterGradeDto>> response;
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 		HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
-		return restTemplate.exchange(AdminConfig.BASE_URI + "/std/" + studentId, HttpMethod.GET, entity,
+		return restTemplate.exchange(AdminConfig.BASE_URI + "/courseGrade/" + studentId, HttpMethod.GET, entity,
 				new ParameterizedTypeReference<List<StudentCourseSemesterGradeDto>>() {
 				});
 	}

@@ -2,6 +2,7 @@ package com.example.spring.boot.service;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,6 @@ import com.example.spring.boot.DTO.StudentDto;
 import com.example.spring.boot.exception.DuplicateResourceException;
 import com.example.spring.boot.exception.ResourceNotFoundException;
 import com.example.spring.boot.model.Student;
-import com.example.spring.boot.util.StudentMapperUtil;
 
 @Service
 @Transactional
@@ -34,10 +34,11 @@ public class StudentServiceImpl implements StudentService {
 	}
 	@Override	
 	public ResponseEntity<StudentDto> getStudent(Long id) throws ResourceNotFoundException {
+		ModelMapper modelMapper = new ModelMapper();
 		Student student = studentDAO.getStudent(id);
 		if (student == null)
 			throw new ResourceNotFoundException(Student.class);
-		return new ResponseEntity<StudentDto>(StudentMapperUtil.entityToDto(student), HttpStatus.FOUND);
+		return new ResponseEntity<StudentDto>(modelMapper.map(student, StudentDto.class), HttpStatus.FOUND);
 	}
 	
 	@Override

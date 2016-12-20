@@ -28,7 +28,7 @@ public class StudentCourseSemesterGradeController {
 //	public ResponseEntity<List<StudentCourseSemesterGrade>> getAllStudentCourseSemesterGrade() throws ResourceNotFoundException {
 //		return  studentCourseSemesterGradeService.getAllStudentCourseSemesterGrades();
 //	}
-	@RequestMapping(value="std/{studentId}",method = RequestMethod.GET)
+	@RequestMapping(value="courseGrade/{studentId}",method = RequestMethod.GET)
 	public ResponseEntity<List<StudentCourseSemesterGradeDto>> getAllStudentCourseSemesterGradeByStudentId(@PathVariable("studentId") Long studentId) throws ResourceNotFoundException {
 		return  studentCourseSemesterGradeService.getAllStudentCourseSemesterGradesByStudentId(studentId);
 	}

@@ -1,7 +1,9 @@
 package com.example.spring.boot.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +20,6 @@ import com.example.spring.boot.exception.ResourceNotFoundException;
 import com.example.spring.boot.model.Course;
 import com.example.spring.boot.model.Student;
 import com.example.spring.boot.model.StudentCourseSemesterGrade;
-import com.example.spring.boot.util.StudentCourseSemesterGradeMapperUtil;
 
 @Service
 @Transactional
@@ -92,13 +93,18 @@ public class StudentCourseSemesterGradeServiceImpl implements StudentCourseSemes
 
 	@Override
 	public ResponseEntity<List<StudentCourseSemesterGradeDto>> getAllStudentCourseSemesterGradesByStudentId(Long studentId) throws ResourceNotFoundException {
-		// TODO Auto-generated method stub
+		List<StudentCourseSemesterGradeDto> studentCourseSemesterGradeDtos = new ArrayList<>();
 		Student student = studentDAO.getStudent(studentId);
 		if (student == null) {
 			throw new ResourceNotFoundException();
 		}
-
-		return new ResponseEntity<List<StudentCourseSemesterGradeDto>>(StudentCourseSemesterGradeMapperUtil.entitiesToDtos(student.getStudentCourseSemesterGrade()),HttpStatus.FOUND);
+		ModelMapper modelMapper = new ModelMapper();
+		for(StudentCourseSemesterGrade entity: student.getStudentCourseSemesterGrade()){
+			StudentCourseSemesterGradeDto dto = modelMapper.map(entity, StudentCourseSemesterGradeDto.class);
+			studentCourseSemesterGradeDtos.add(dto);
+		}
+		
+		return new ResponseEntity<List<StudentCourseSemesterGradeDto>>(studentCourseSemesterGradeDtos,HttpStatus.FOUND);
 	}
 
 }
