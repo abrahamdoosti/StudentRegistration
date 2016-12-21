@@ -63,10 +63,10 @@ public class StudentCourseSemesterGradeServiceImpl implements StudentCourseSemes
 		try {
 			StudentCourseSemesterGrade studentCourseSemesterGrade = new StudentCourseSemesterGrade();
 			studentCourseSemesterGrade.setStudent(studentDAO.getStudent(studentCourseSemesterGradeDto.getStudentId()));
-			studentCourseSemesterGrade.setCourse(courseDAO.getCourse(studentCourseSemesterGradeDto.getCourseId()));
+			studentCourseSemesterGrade.setCourse(courseDAO.getCourse(studentCourseSemesterGradeDto.getCourse().getCourseID()));
 			studentCourseSemesterGrade.setGrade(studentCourseSemesterGradeDto.getGrade());
 			studentCourseSemesterGrade
-					.setSemester(semesterDAO.getSemester(studentCourseSemesterGradeDto.getSemesterId()));
+					.setSemester(semesterDAO.getSemester(studentCourseSemesterGradeDto.getSemester().getSemesterId()));
 			return new ResponseEntity<StudentCourseSemesterGrade>(
 					StudentCourseSemesterGradeDAO.save(studentCourseSemesterGrade), HttpStatus.CREATED);
 		} catch (Exception e) {
@@ -100,7 +100,11 @@ public class StudentCourseSemesterGradeServiceImpl implements StudentCourseSemes
 		}
 		ModelMapper modelMapper = new ModelMapper();
 		for(StudentCourseSemesterGrade entity: student.getStudentCourseSemesterGrade()){
+			entity.getStudent();
+			entity.getCourse();
+			entity.getSemester();
 			StudentCourseSemesterGradeDto dto = modelMapper.map(entity, StudentCourseSemesterGradeDto.class);
+
 			studentCourseSemesterGradeDtos.add(dto);
 		}
 		

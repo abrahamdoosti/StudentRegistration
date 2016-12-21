@@ -3,9 +3,10 @@ package com.example.spring.boot.DTO;
 public class StudentCourseSemesterGradeDto {
 	private Long scsgId;
 	private Long studentId;	
-	private int courseId;
-	private int semesterId;
 	private float grade;
+	//private StudentDto student;
+	private CourseDto course;
+	private SemesterDto semester;
 	
 	public StudentCourseSemesterGradeDto(){
 		
@@ -27,22 +28,6 @@ public class StudentCourseSemesterGradeDto {
 		this.scsgId = scsgId;
 	}
 
-	public int getCourseId() {
-		return courseId;
-	}
-
-	public void setCourseId(int courseId) {
-		this.courseId = courseId;
-	}
-
-	public int getSemesterId() {
-		return semesterId;
-	}
-
-	public void setSemesterId(int semesterId) {
-		this.semesterId = semesterId;
-	}
-
 	public float getGrade() {
 		return grade;
 	}
@@ -50,7 +35,30 @@ public class StudentCourseSemesterGradeDto {
 	public void setGrade(float grade) {
 		this.grade = grade;
 	}
-	
+
+	/*public StudentDto getStudent() {
+		return student;
+	}
+
+	public void setStudent(StudentDto student) {
+		this.student = student;
+	}*/
+
+	public CourseDto getCourse() {
+		return course;
+	}
+
+	public void setCourse(CourseDto course) {
+		this.course = course;
+	}
+
+	public SemesterDto getSemester() {
+		return semester;
+	}
+
+	public void setSemester(SemesterDto semester) {
+		this.semester = semester;
+	}
 	
 	
 }

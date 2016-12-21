@@ -2,6 +2,9 @@ package com.example.spring.boot.DTO;
 
 import java.util.Date;
 
+import com.example.spring.boot.model.Course;
+import com.example.spring.boot.model.Student;
+
 public class StudentDto {
 
 	private Long studentId;
@@ -12,6 +15,7 @@ public class StudentDto {
 	private String mobileNo;
 	private String nationality;
 	private String phone;
+	 
 
 	public StudentDto() {
 
@@ -80,5 +84,6 @@ public class StudentDto {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+
 
 }
