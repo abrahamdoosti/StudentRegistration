@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.spring.boot.DTO.SemesterDto;
 import com.example.spring.boot.exception.DuplicateResourceException;
 import com.example.spring.boot.exception.ResourceNotFoundException;
 import com.example.spring.boot.model.Semester;
@@ -25,23 +26,23 @@ public class SemesterController {
 	private SemesterService semesterService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<Semester>> getAllSemesters() throws ResourceNotFoundException {
+	public ResponseEntity<List<SemesterDto>> getAllSemesters() throws ResourceNotFoundException {
 		return  semesterService.getAllSemesters();
 	}
 
 	@RequestMapping(value = "/{SemesterId}", method = RequestMethod.GET)
-	public ResponseEntity<Semester> getSemester(@PathVariable("SemesterId") final int id) throws ResourceNotFoundException {
+	public ResponseEntity<SemesterDto> getSemester(@PathVariable("SemesterId") final int id) throws ResourceNotFoundException {
 		return semesterService.getSemester(id);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Semester> createSemester(@RequestBody final Semester Semester) throws  DuplicateResourceException {
-		return semesterService.registerSemester(Semester);
+	public ResponseEntity<SemesterDto> createSemester(@RequestBody final SemesterDto SemesterDto) throws  DuplicateResourceException {
+		return semesterService.registerSemester(SemesterDto);
 	}
 	
 	@RequestMapping(value = "/{SemesterId}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Semester> updateSemester(@RequestBody final Semester Semester,@PathVariable("SemesterId") final int SemesterId) {
-		return semesterService.updateSemester(SemesterId, Semester);
+	public ResponseEntity<SemesterDto> updateSemester(@RequestBody final SemesterDto SemesterDto ,@PathVariable("SemesterId") final int SemesterId) {
+		return semesterService.updateSemester(SemesterId, SemesterDto);
 	}
 	
 	@RequestMapping(value = "/{SemesterId}", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)

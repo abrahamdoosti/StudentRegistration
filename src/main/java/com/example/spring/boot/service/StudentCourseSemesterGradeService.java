@@ -15,11 +15,17 @@ public interface StudentCourseSemesterGradeService {
 
 	public ResponseEntity<List<StudentCourseSemesterGrade>> getAllStudentCourseSemesterGrades() throws ResourceNotFoundException;
 
-	public ResponseEntity<StudentCourseSemesterGrade> registerStudentCourseSemesterGrade(StudentCourseSemesterGradeDto studentCourseSemesterGradeDto) throws DuplicateResourceException ;
+	public ResponseEntity<StudentCourseSemesterGradeDto> registerStudentCourseSemesterGrade(StudentCourseSemesterGradeDto studentCourseSemesterGradeDto) throws DuplicateResourceException ;
 
 	public ResponseEntity<StudentCourseSemesterGrade> updateStudentCourseSemesterGrade(Long id, StudentCourseSemesterGrade studentCourseSemesterGrade) ;
 
 	public ResponseEntity<Void> removeStudentCourseSemesterGrade(Long id) throws ResourceNotFoundException;
 
 	public ResponseEntity<List<StudentCourseSemesterGradeDto>> getAllStudentCourseSemesterGradesByStudentId(Long studentId) throws ResourceNotFoundException;
+	
+	ResponseEntity<StudentCourseSemesterGradeDto> enrollStudent(final Long studentId, final int couresId, final int semisterId);
+	
+	ResponseEntity<Void> assingGrade(final Long studentId, final Float grade);
+
+	ResponseEntity<List<StudentCourseSemesterGradeDto>> getStudentsGrade(final int courseId);
 }

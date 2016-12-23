@@ -13,12 +13,12 @@ public interface StudentService {
 
 	ResponseEntity<StudentDto> getStudent(Long id) throws ResourceNotFoundException;	
 
-	ResponseEntity<Student> registerStudent(Student student) throws DuplicateResourceException;
+	ResponseEntity<StudentDto> registerStudent(StudentDto studentDto) throws DuplicateResourceException;
 
-	ResponseEntity<Student> updateStudent(Long id, Student student);
+	ResponseEntity<StudentDto> updateStudent(Long id, Student student);
 
 	ResponseEntity<Void> unregisterStudent(Long id) throws ResourceNotFoundException;
 
-	ResponseEntity<List<Student>> getAllStudents() throws ResourceNotFoundException;
+	ResponseEntity<List<StudentDto>> getAllStudents() throws ResourceNotFoundException;
 
 }

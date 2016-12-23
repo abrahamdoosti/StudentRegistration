@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.spring.boot.DTO.CourseDto;
 import com.example.spring.boot.exception.DuplicateResourceException;
 import com.example.spring.boot.exception.ResourceNotFoundException;
-import com.example.spring.boot.model.Course;
 import com.example.spring.boot.service.CourseService;
 
 
@@ -25,23 +25,23 @@ public class CourseController {
 	private CourseService courseService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<Course>> getAllCourses() throws ResourceNotFoundException {
+	public ResponseEntity<List<CourseDto>> getAllCourses() throws ResourceNotFoundException {
 		return  courseService.getAllCourses();
 	}
 
 	@RequestMapping(value = "/{CourseId}", method = RequestMethod.GET)
-	public ResponseEntity<Course> getCourse(@PathVariable("CourseId") final int id) throws ResourceNotFoundException {
+	public ResponseEntity<CourseDto> getCourse(@PathVariable("CourseId") final int id) throws ResourceNotFoundException {
 		return courseService.getCourse(id);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Course> createCourse(@RequestBody final Course Course) throws  DuplicateResourceException {
-		return courseService.registerCourse(Course);
+	public ResponseEntity<CourseDto> createCourse(@RequestBody final CourseDto CourseDto) throws  DuplicateResourceException {
+		return courseService.registerCourse(CourseDto);
 	}
 	
 	@RequestMapping(value = "/{CourseId}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Course> updateCourse(@RequestBody final Course Course,@PathVariable("CourseId") final int CourseId) {
-		return courseService.updateCourse(CourseId, Course);
+	public ResponseEntity<CourseDto> updateCourse(@RequestBody final CourseDto CourseDto, @PathVariable("CourseId") final int CourseId) {
+		return courseService.updateCourse(CourseId, CourseDto);
 	}
 	
 	@RequestMapping(value = "/{CourseId}", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)

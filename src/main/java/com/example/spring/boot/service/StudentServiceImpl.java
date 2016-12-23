@@ -1,9 +1,11 @@
 package com.example.spring.boot.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,15 +24,17 @@ public class StudentServiceImpl implements StudentService {
 	@Autowired
 	private StudentDAO studentDAO;
 	
+	@Autowired
+	private ModelMapper modelMapper;
 	
 	@Override	
-	public ResponseEntity<Student> registerStudent(Student student) throws DuplicateResourceException {
-		try {			
-			return new ResponseEntity<Student>(studentDAO.save(student) , HttpStatus.CREATED);
+	public ResponseEntity<StudentDto> registerStudent(StudentDto studentDto) throws DuplicateResourceException {
+		try {
+			Student student = modelMapper.map(studentDto, Student.class); 
+			return new ResponseEntity<StudentDto>(modelMapper.map(studentDAO.save(student), StudentDto.class), HttpStatus.CREATED);
 		} catch (Exception ex) {
 			throw new DuplicateResourceException(Student.class);
 		}
-		
 	}
 	@Override	
 	public ResponseEntity<StudentDto> getStudent(Long id) throws ResourceNotFoundException {
@@ -42,19 +46,24 @@ public class StudentServiceImpl implements StudentService {
 	}
 	
 	@Override
-	public ResponseEntity<List<Student>> getAllStudents() throws ResourceNotFoundException {
+	public ResponseEntity<List<StudentDto>> getAllStudents() throws ResourceNotFoundException {
 		// TODO Auto-generated method stub
 		List<Student> students=studentDAO.findAll();
 		if(students==null||students.size()==0){
 			throw new ResourceNotFoundException();
-		}		
-		return new ResponseEntity<List<Student>>(students,HttpStatus.FOUND);
+		}	
+		List<StudentDto> dtos = new ArrayList<>(); 
+		students.forEach(entity -> {
+			dtos.add(modelMapper.map(entity, StudentDto.class));
+		});
+		
+		return new ResponseEntity<List<StudentDto>>(dtos, HttpStatus.FOUND);
 	}
 	
 	@Override
-	public ResponseEntity<Student> updateStudent(Long id, Student student) {
+	public ResponseEntity<StudentDto> updateStudent(Long id, Student student) {
 		student.setStudentId(id);
-		return new ResponseEntity<Student>(studentDAO.updateStudent(student), HttpStatus.OK);
+		return new ResponseEntity<StudentDto>(modelMapper.map(studentDAO.updateStudent(student), StudentDto.class), HttpStatus.OK);
 	}
 	
 	@Override

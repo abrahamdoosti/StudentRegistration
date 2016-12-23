@@ -3,7 +3,7 @@ package com.example.spring.boot.DTO;
 public class StudentCourseSemesterGradeDto {
 	private Long scsgId;
 	private Long studentId;	
-	private float grade;
+	private Float grade;
 	//private StudentDto student;
 	private CourseDto course;
 	private SemesterDto semester;
@@ -28,11 +28,11 @@ public class StudentCourseSemesterGradeDto {
 		this.scsgId = scsgId;
 	}
 
-	public float getGrade() {
+	public Float getGrade() {
 		return grade;
 	}
 
-	public void setGrade(float grade) {
+	public void setGrade(Float grade) {
 		this.grade = grade;
 	}
 

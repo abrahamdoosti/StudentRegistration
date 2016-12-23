@@ -4,19 +4,20 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
+import com.example.spring.boot.DTO.CourseDto;
 import com.example.spring.boot.exception.DuplicateResourceException;
 import com.example.spring.boot.exception.ResourceNotFoundException;
 import com.example.spring.boot.model.Course;
 
 
 public interface CourseService {
-	public ResponseEntity<Course> getCourse(int id) throws ResourceNotFoundException;
+	ResponseEntity<CourseDto> getCourse(int id) throws ResourceNotFoundException;
 
-	public ResponseEntity<List<Course>> getAllCourses() throws ResourceNotFoundException;
+	public ResponseEntity<List<CourseDto>> getAllCourses() throws ResourceNotFoundException;
 
-	public ResponseEntity<Course> registerCourse(Course course) throws DuplicateResourceException ;
+	ResponseEntity<CourseDto> registerCourse(CourseDto course) throws DuplicateResourceException;
 
-	public ResponseEntity<Course> updateCourse(int id, Course course) ;
+	ResponseEntity<CourseDto> updateCourse(int id, CourseDto courseDto);
 
-	public ResponseEntity<Void> removeCourse(int id) throws ResourceNotFoundException;
+	ResponseEntity<Void> removeCourse(int id) throws ResourceNotFoundException;
 }

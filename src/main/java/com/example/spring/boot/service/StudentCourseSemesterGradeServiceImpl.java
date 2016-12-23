@@ -26,7 +26,7 @@ import com.example.spring.boot.model.StudentCourseSemesterGrade;
 public class StudentCourseSemesterGradeServiceImpl implements StudentCourseSemesterGradeService {
 
 	@Autowired
-	private StudentCourseSemesterGradeDAO StudentCourseSemesterGradeDAO;
+	private StudentCourseSemesterGradeDAO studentCourseSemesterGradeDAO;
 
 	@Autowired
 	private StudentDAO studentDAO;
@@ -36,11 +36,14 @@ public class StudentCourseSemesterGradeServiceImpl implements StudentCourseSemes
 
 	@Autowired
 	private SemesterDAO semesterDAO;
+	
+	@Autowired
+	private ModelMapper modelMapper;
 
 	@Override
 	public ResponseEntity<StudentCourseSemesterGrade> getStudentCourseSemesterGrade(Long id)
 			throws ResourceNotFoundException {
-		StudentCourseSemesterGrade studentCourseSemesterGrade = StudentCourseSemesterGradeDAO
+		StudentCourseSemesterGrade studentCourseSemesterGrade = studentCourseSemesterGradeDAO
 				.getStudentCourseSemesterGrade(id);
 		if (studentCourseSemesterGrade == null)
 			throw new ResourceNotFoundException(Course.class);
@@ -51,28 +54,52 @@ public class StudentCourseSemesterGradeServiceImpl implements StudentCourseSemes
 	@Override
 	public ResponseEntity<List<StudentCourseSemesterGrade>> getAllStudentCourseSemesterGrades()
 			throws ResourceNotFoundException {
-		if (StudentCourseSemesterGradeDAO.getAllStudentCourseSemesterGrade().isEmpty())
+		if (studentCourseSemesterGradeDAO.getAllStudentCourseSemesterGrade().isEmpty())
 			throw new ResourceNotFoundException(StudentCourseSemesterGrade.class);
 		return new ResponseEntity<List<StudentCourseSemesterGrade>>(
-				StudentCourseSemesterGradeDAO.getAllStudentCourseSemesterGrade(), HttpStatus.OK);
+				studentCourseSemesterGradeDAO.getAllStudentCourseSemesterGrade(), HttpStatus.OK);
+	}
+	
+	@Override
+	public ResponseEntity<List<StudentCourseSemesterGradeDto>> getStudentsGrade(final int courseId){
+		List<StudentCourseSemesterGrade> studentsGrade = studentCourseSemesterGradeDAO.getStudentsGrade(courseId);
+		List<StudentCourseSemesterGradeDto> dtos = new ArrayList<>();
+		studentsGrade.forEach(entity -> dtos.add(modelMapper.map(entity, StudentCourseSemesterGradeDto.class)));
+		return new ResponseEntity<List<StudentCourseSemesterGradeDto>>(dtos, HttpStatus.OK);
 	}
 
 	@Override
-	public ResponseEntity<StudentCourseSemesterGrade> registerStudentCourseSemesterGrade(
+	public ResponseEntity<StudentCourseSemesterGradeDto> registerStudentCourseSemesterGrade(
 			StudentCourseSemesterGradeDto studentCourseSemesterGradeDto) throws DuplicateResourceException {
 		try {
 			StudentCourseSemesterGrade studentCourseSemesterGrade = new StudentCourseSemesterGrade();
 			studentCourseSemesterGrade.setStudent(studentDAO.getStudent(studentCourseSemesterGradeDto.getStudentId()));
-			studentCourseSemesterGrade.setCourse(courseDAO.getCourse(studentCourseSemesterGradeDto.getCourse().getCourseID()));
-			studentCourseSemesterGrade.setGrade(studentCourseSemesterGradeDto.getGrade());
+			studentCourseSemesterGrade
+					.setCourse(courseDAO.getCourse(studentCourseSemesterGradeDto.getCourse().getCourseID()));
 			studentCourseSemesterGrade
 					.setSemester(semesterDAO.getSemester(studentCourseSemesterGradeDto.getSemester().getSemesterId()));
-			return new ResponseEntity<StudentCourseSemesterGrade>(
-					StudentCourseSemesterGradeDAO.save(studentCourseSemesterGrade), HttpStatus.CREATED);
+			return new ResponseEntity<StudentCourseSemesterGradeDto>(
+					modelMapper.map(studentCourseSemesterGradeDAO.save(studentCourseSemesterGrade),
+							StudentCourseSemesterGradeDto.class),
+					HttpStatus.CREATED);
 		} catch (Exception e) {
-			throw new DuplicateResourceException("this Course is duplicate");
+			throw new DuplicateResourceException("Student is already registred for this course");
 		}
 
+	}
+	
+	@Override
+	public ResponseEntity<StudentCourseSemesterGradeDto> enrollStudent(final Long studentId, final int couresId, final int semisterId){
+		StudentCourseSemesterGrade studentCourseSemesterGrade = new StudentCourseSemesterGrade();
+		studentCourseSemesterGrade.setStudent(studentDAO.getStudent(studentId));
+		studentCourseSemesterGrade.setCourse(courseDAO.getCourse(couresId));
+		studentCourseSemesterGrade.setSemester(semesterDAO.getSemester(semisterId));
+		return new ResponseEntity<StudentCourseSemesterGradeDto>(modelMapper.map(studentCourseSemesterGradeDAO.save(studentCourseSemesterGrade), StudentCourseSemesterGradeDto.class), HttpStatus.CREATED);
+	}
+	
+	public ResponseEntity<Void> assingGrade(final Long StudentId, final Float grade) {
+		studentCourseSemesterGradeDAO.updateGrade(StudentId, grade);
+		return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
 	}
 
 	@Override
@@ -80,35 +107,31 @@ public class StudentCourseSemesterGradeServiceImpl implements StudentCourseSemes
 			StudentCourseSemesterGrade studentCourseSemesterGrade) {
 		studentCourseSemesterGrade.setScsgId(id);
 		return new ResponseEntity<StudentCourseSemesterGrade>(
-				StudentCourseSemesterGradeDAO.updateStudentCourseSemesterGrade(studentCourseSemesterGrade),
+				studentCourseSemesterGradeDAO.updateStudentCourseSemesterGrade(studentCourseSemesterGrade),
 				HttpStatus.OK);
 	}
 
 	@Override
 	public ResponseEntity<Void> removeStudentCourseSemesterGrade(Long id) throws ResourceNotFoundException {
-		if (StudentCourseSemesterGradeDAO.getStudentCourseSemesterGrade(id) == null)
+		if (studentCourseSemesterGradeDAO.getStudentCourseSemesterGrade(id) == null)
 			throw new ResourceNotFoundException("Course was not found, please check key");
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 
 	@Override
-	public ResponseEntity<List<StudentCourseSemesterGradeDto>> getAllStudentCourseSemesterGradesByStudentId(Long studentId) throws ResourceNotFoundException {
+	public ResponseEntity<List<StudentCourseSemesterGradeDto>> getAllStudentCourseSemesterGradesByStudentId(
+			Long studentId) throws ResourceNotFoundException {
 		List<StudentCourseSemesterGradeDto> studentCourseSemesterGradeDtos = new ArrayList<>();
 		Student student = studentDAO.getStudent(studentId);
-		if (student == null) {
+		if (!(student != null && (student.getStudentCourseSemesterGrade() != null
+				&& student.getStudentCourseSemesterGrade().size() != 0))) {
 			throw new ResourceNotFoundException();
 		}
-		ModelMapper modelMapper = new ModelMapper();
-		for(StudentCourseSemesterGrade entity: student.getStudentCourseSemesterGrade()){
-			entity.getStudent();
-			entity.getCourse();
-			entity.getSemester();
+		student.getStudentCourseSemesterGrade().forEach(entity -> {
 			StudentCourseSemesterGradeDto dto = modelMapper.map(entity, StudentCourseSemesterGradeDto.class);
-
 			studentCourseSemesterGradeDtos.add(dto);
-		}
-		
-		return new ResponseEntity<List<StudentCourseSemesterGradeDto>>(studentCourseSemesterGradeDtos,HttpStatus.FOUND);
+		});
+		return new ResponseEntity<List<StudentCourseSemesterGradeDto>>(studentCourseSemesterGradeDtos,
+				HttpStatus.FOUND);
 	}
-
 }
