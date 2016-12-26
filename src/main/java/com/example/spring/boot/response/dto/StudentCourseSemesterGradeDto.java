@@ -1,8 +1,7 @@
 package com.example.spring.boot.response.dto;
 
 public class StudentCourseSemesterGradeDto {
-	private Long scsgId;
-	private Long studentId;	
+	private Long scsgId;	
 	private Float grade;
 	private StudentDto studentDto;
 	private CourseDto courseDto;
@@ -11,15 +10,7 @@ public class StudentCourseSemesterGradeDto {
 	public StudentCourseSemesterGradeDto(){
 		
 	}
-
-	public Long getStudentId() {
-		return studentId;
-	}
-
-	public void setStudentId(Long studentId) {
-		this.studentId = studentId;
-	}
-
+	
 	public Long getScsgId() {
 		return scsgId;
 	}
@@ -59,6 +50,8 @@ public class StudentCourseSemesterGradeDto {
 	public void setSemester(SemesterDto semesterDto) {
 		this.semesterDto = semesterDto;
 	}
+
+	
 	
 	
 }

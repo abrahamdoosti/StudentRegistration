@@ -20,7 +20,7 @@ public class StudentCourseSemesterGrade {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "scsg_id")
 	private Long scsgId;
-	private float grade;
+	private Float grade;
 	
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -78,11 +78,11 @@ public class StudentCourseSemesterGrade {
 		this.semester = semester;
 	}
 
-	public float getGrade() {
+	public Float getGrade() {
 		return grade;
 	}
 
-	public void setGrade(float grade) {
+	public void setGrade(Float grade) {
 		this.grade = grade;
 	}
 

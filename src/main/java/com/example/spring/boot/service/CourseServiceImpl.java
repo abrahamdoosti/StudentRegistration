@@ -63,9 +63,10 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	@Override
-	public ResponseEntity<Void> removeCourse(int id) throws ResourceNotFoundException {
-		if(courseDAO.getCourse(id) == null)
+	public ResponseEntity<Void> removeCourse(int courseId) throws ResourceNotFoundException {
+		if(courseDAO.getCourse(courseId) == null)
 			throw new ResourceNotFoundException("Course was not found, please check key"); 
+		courseDAO.deleteCourse(courseId);
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 	

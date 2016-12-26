@@ -50,7 +50,5 @@ public class StudentCourseSemesterGradeRequestDto {
 	public void setSemesterId(int semesterId) {
 		this.semesterId = semesterId;
 	}
-
-	
 	
 }
