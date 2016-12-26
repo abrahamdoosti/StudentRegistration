@@ -2,7 +2,6 @@ package com.example.spring.boot.DAO;
 
 import java.util.List;
 
-import com.example.spring.boot.model.Student;
 import com.example.spring.boot.model.StudentCourseSemesterGrade;
 
 public interface StudentCourseSemesterGradeDAO {
@@ -16,5 +15,7 @@ public interface StudentCourseSemesterGradeDAO {
 
 	public void delete(Long id);
 
+	void updateGrade(Long studentId, Float grade);
 	
+	List<StudentCourseSemesterGrade> getStudentsGrade(final int courseId);
 }

@@ -6,17 +6,18 @@ import org.springframework.http.ResponseEntity;
 
 import com.example.spring.boot.exception.DuplicateResourceException;
 import com.example.spring.boot.exception.ResourceNotFoundException;
-import com.example.spring.boot.model.Semester;
+import com.example.spring.boot.request.dto.SemesterRequestDto;
+import com.example.spring.boot.response.dto.SemesterDto;
 
 
 public interface SemesterService {
-	public ResponseEntity<Semester> getSemester(int id) throws ResourceNotFoundException;
+	ResponseEntity<SemesterDto> getSemester(int id) throws ResourceNotFoundException;
 
-	public ResponseEntity<List<Semester>> getAllSemesters() throws ResourceNotFoundException;
+	public ResponseEntity<List<SemesterDto>> getAllSemesters() throws ResourceNotFoundException;
 
-	public ResponseEntity<Semester> registerSemester(Semester semester) throws DuplicateResourceException ;
+	public ResponseEntity<SemesterDto> registerSemester(SemesterRequestDto semesterRequestDto) throws DuplicateResourceException ;
 
-	public ResponseEntity<Semester> updateSemester(int id, Semester semester) ;
+	ResponseEntity<SemesterDto> updateSemester(int id, SemesterRequestDto semesterRequestDto);
 
-	public ResponseEntity<Void> removeSemester(int id) throws ResourceNotFoundException;
+	ResponseEntity<Void> removeSemester(int id) throws ResourceNotFoundException;
 }

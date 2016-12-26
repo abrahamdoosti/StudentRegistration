@@ -1,23 +1,23 @@
-package com.example.spring.boot.DTO;
+package com.example.spring.boot.request.dto;
 
 import java.util.Date;
 
-import com.example.spring.boot.model.Course;
-import com.example.spring.boot.model.Student;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class StudentDto {
+public class StudentRequestDto {
 
 	private Long studentId;
 	private String firstName;
 	private String lastName;
 	private String address;
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private Date dateOfBirth;
 	private String mobileNo;
 	private String nationality;
 	private String phone;
 	 
 
-	public StudentDto() {
+	public StudentRequestDto() {
 
 	}
 

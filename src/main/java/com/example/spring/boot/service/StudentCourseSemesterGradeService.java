@@ -4,22 +4,29 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
-import com.example.spring.boot.DTO.StudentCourseSemesterGradeDto;
+import com.example.spring.boot.exception.DataMismatchException;
 import com.example.spring.boot.exception.DuplicateResourceException;
 import com.example.spring.boot.exception.ResourceNotFoundException;
 import com.example.spring.boot.model.StudentCourseSemesterGrade;
+import com.example.spring.boot.request.dto.StudentCourseSemesterGradeRequestDto;
+import com.example.spring.boot.response.dto.StudentCourseSemesterGradeDto;
 
 
 public interface StudentCourseSemesterGradeService {
-	public ResponseEntity<StudentCourseSemesterGrade> getStudentCourseSemesterGrade(Long id) throws ResourceNotFoundException;
+	
+	 
 
-	public ResponseEntity<List<StudentCourseSemesterGrade>> getAllStudentCourseSemesterGrades() throws ResourceNotFoundException;
+	 ResponseEntity<List<StudentCourseSemesterGrade>> getAllStudentCourseSemesterGrades() throws ResourceNotFoundException;
+	 
+	 ResponseEntity<Void> removeStudentCourseSemesterGrade(Long id) throws ResourceNotFoundException;
 
-	public ResponseEntity<StudentCourseSemesterGrade> registerStudentCourseSemesterGrade(StudentCourseSemesterGradeDto studentCourseSemesterGradeDto) throws DuplicateResourceException ;
-
-	public ResponseEntity<StudentCourseSemesterGrade> updateStudentCourseSemesterGrade(Long id, StudentCourseSemesterGrade studentCourseSemesterGrade) ;
-
-	public ResponseEntity<Void> removeStudentCourseSemesterGrade(Long id) throws ResourceNotFoundException;
-
-	public ResponseEntity<List<StudentCourseSemesterGradeDto>> getAllStudentCourseSemesterGradesByStudentId(Long studentId) throws ResourceNotFoundException;
+	 ResponseEntity<List<StudentCourseSemesterGradeDto>> getAllStudentCourseSemesterGradesByStudentId(Long studentId) throws ResourceNotFoundException;
+	
+	 ResponseEntity<StudentCourseSemesterGradeDto> enrollStudent(final Long studentId, final int couresId, final int semisterId) throws DuplicateResourceException;
+	 
+	 ResponseEntity<StudentCourseSemesterGrade> getStudentCourseSemesterGrade(Long id) throws ResourceNotFoundException;
+	 
+	 ResponseEntity<StudentCourseSemesterGradeDto> updateStudentCourseSemesterGrade(Long studentId, Long scsgId, StudentCourseSemesterGradeRequestDto studentCourseSemesterGradeRequestDto) throws DataMismatchException;
+	
+	 ResponseEntity<List<StudentCourseSemesterGradeDto>> getStudentGradeByCourseId(final int courseId);
 }

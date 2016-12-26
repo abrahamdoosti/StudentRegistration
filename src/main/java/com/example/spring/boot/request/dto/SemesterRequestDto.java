@@ -1,13 +1,13 @@
-package com.example.spring.boot.DTO;
+package com.example.spring.boot.request.dto;
 
 import javax.persistence.Column;
 
-public class SemesterDto {
+public class SemesterRequestDto {
 	private int semesterId;
 	private String semesterSeason;
 	private int year;
 
-	public SemesterDto() {
+	public SemesterRequestDto() {
 
 	}
 

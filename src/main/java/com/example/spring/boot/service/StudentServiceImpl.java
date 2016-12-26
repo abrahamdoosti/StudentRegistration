@@ -10,10 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.spring.boot.DAO.StudentDAO;
-import com.example.spring.boot.DTO.StudentDto;
 import com.example.spring.boot.exception.DuplicateResourceException;
 import com.example.spring.boot.exception.ResourceNotFoundException;
 import com.example.spring.boot.model.Student;
+import com.example.spring.boot.request.dto.StudentRequestDto;
+import com.example.spring.boot.response.dto.StudentDto;
 
 @Service
 @Transactional
@@ -22,19 +23,20 @@ public class StudentServiceImpl implements StudentService {
 	@Autowired
 	private StudentDAO studentDAO;
 	
+	@Autowired
+	private ModelMapper modelMapper;
 	
 	@Override	
-	public ResponseEntity<Student> registerStudent(Student student) throws DuplicateResourceException {
-		try {			
-			return new ResponseEntity<Student>(studentDAO.save(student) , HttpStatus.CREATED);
+	public ResponseEntity<StudentDto> registerStudent(StudentRequestDto studentRequestDto) throws DuplicateResourceException {
+		try {
+			Student student = modelMapper.map(studentRequestDto, Student.class); 
+			return new ResponseEntity<StudentDto>(modelMapper.map(studentDAO.save(student) , StudentDto.class), HttpStatus.CREATED);
 		} catch (Exception ex) {
 			throw new DuplicateResourceException(Student.class);
 		}
-		
 	}
 	@Override	
-	public ResponseEntity<StudentDto> getStudent(Long id) throws ResourceNotFoundException {
-		ModelMapper modelMapper = new ModelMapper();
+	public ResponseEntity<StudentDto> getStudent(Long id) throws ResourceNotFoundException {		
 		Student student = studentDAO.getStudent(id);
 		if (student == null)
 			throw new ResourceNotFoundException(Student.class);
@@ -42,19 +44,25 @@ public class StudentServiceImpl implements StudentService {
 	}
 	
 	@Override
-	public ResponseEntity<List<Student>> getAllStudents() throws ResourceNotFoundException {
+	public ResponseEntity<List<StudentDto>> getAllStudents() throws ResourceNotFoundException {
 		// TODO Auto-generated method stub
 		List<Student> students=studentDAO.findAll();
 		if(students==null||students.size()==0){
 			throw new ResourceNotFoundException();
-		}		
-		return new ResponseEntity<List<Student>>(students,HttpStatus.FOUND);
+		}	
+		List<StudentDto> dtos = new ArrayList<>(); 
+		students.forEach(entity -> {
+			dtos.add(modelMapper.map(entity, StudentDto.class));
+		});
+		
+		return new ResponseEntity<List<StudentDto>>(dtos, HttpStatus.FOUND);
 	}
 	
 	@Override
-	public ResponseEntity<Student> updateStudent(Long id, Student student) {
-		student.setStudentId(id);
-		return new ResponseEntity<Student>(studentDAO.updateStudent(student), HttpStatus.OK);
+	public ResponseEntity<StudentDto> updateStudent(Long id, StudentRequestDto studentRequestDto) {
+		studentRequestDto.setStudentId(id);
+		Student student=modelMapper.map(studentRequestDto, Student.class);
+		return new ResponseEntity<StudentDto>(modelMapper.map(studentDAO.updateStudent(student), StudentDto.class), HttpStatus.OK);
 	}
 	
 	@Override
@@ -65,28 +73,5 @@ public class StudentServiceImpl implements StudentService {
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 	
-
-	
-
-//	@Override
-//	public ResponseEntity<List<Student>> getStudent(String firstName) {
-//		return new ResponseEntity<List<Student>>(studentDAO.findByFirstName(firstName), HttpStatus.OK);
-//	}
-
-//	@Override
-//	public ResponseEntity<List<Student>> getAllStudents(String... reqParms) throws ResourceNotFoundException {
-//		if (studentDAO.findAll().isEmpty())
-//			throw new ResourceNotFoundException(Student.class);
-//		if (reqParms[0] != null && reqParms[1] == null) {
-//			return new ResponseEntity<List<Student>>(studentDAO.findByFirstName(reqParms[0]), HttpStatus.OK);
-//		} else if (reqParms[0] == null && reqParms[1] != null) {
-//			return new ResponseEntity<List<Student>>(studentDAO.findByLastName(reqParms[1]), HttpStatus.OK);
-//		} else if (reqParms[0] != null && reqParms[1] != null) {
-//			return new ResponseEntity<List<Student>>(
-//					studentDAO.findByFirstNameAndLastName(reqParms[0], reqParms[1]), HttpStatus.OK);
-//		}
-//		return new ResponseEntity<List<Student>>(studentDAO.findAll(), HttpStatus.OK);
-//	}
-
 
 }

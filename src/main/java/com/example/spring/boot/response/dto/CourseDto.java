@@ -1,4 +1,4 @@
-package com.example.spring.boot.DTO;
+package com.example.spring.boot.response.dto;
 
 public class CourseDto {
 	private int courseID;
