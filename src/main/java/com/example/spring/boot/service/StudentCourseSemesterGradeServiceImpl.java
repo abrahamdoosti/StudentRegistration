@@ -41,6 +41,9 @@ public class StudentCourseSemesterGradeServiceImpl implements StudentCourseSemes
 	@Autowired
 	private ModelMapper modelMapper;
 
+	@Autowired
+	private ModelMapper modelMapper;
+
 	@Override
 	public ResponseEntity<StudentCourseSemesterGrade> getStudentCourseSemesterGrade(Long id)
 			throws ResourceNotFoundException {

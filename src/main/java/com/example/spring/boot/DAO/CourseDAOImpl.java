@@ -25,7 +25,6 @@ public class CourseDAOImpl implements CourseDAO {
 
 	@Override
 	public Course getCourse(int courseID) {
-
 		return getSession().get(Course.class, courseID);
 	}
 

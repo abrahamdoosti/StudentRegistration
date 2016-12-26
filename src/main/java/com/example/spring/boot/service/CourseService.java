@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
+import com.example.spring.boot.DTO.CourseDto;
 import com.example.spring.boot.exception.DuplicateResourceException;
 import com.example.spring.boot.exception.ResourceNotFoundException;
 import com.example.spring.boot.request.dto.CourseRequestDto;

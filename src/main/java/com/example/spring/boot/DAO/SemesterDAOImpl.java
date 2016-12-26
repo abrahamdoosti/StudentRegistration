@@ -20,7 +20,6 @@ public class SemesterDAOImpl implements SemesterDAO {
 
 	@Override
 	public Semester getSemester(int semesterID) {
-
 		return getSession().get(Semester.class, semesterID);
 	}
 

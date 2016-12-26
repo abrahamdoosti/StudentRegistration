@@ -9,11 +9,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "tbl_student_course_semester_grade")
+@Table(name = "tbl_student_course_semester_grade", uniqueConstraints = {
+		@UniqueConstraint(columnNames = { "student_Id", "course_id", "semester_Id" }) })
 public class StudentCourseSemesterGrade {
 
 	@Id
@@ -22,7 +22,6 @@ public class StudentCourseSemesterGrade {
 	private Long scsgId;
 	private Float grade;
 	
-	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "student_Id")
 	private Student student;

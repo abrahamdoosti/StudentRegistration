@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.spring.boot.DAO.SemesterDAO;
+import com.example.spring.boot.DTO.SemesterDto;
 import com.example.spring.boot.exception.DuplicateResourceException;
 import com.example.spring.boot.exception.ResourceNotFoundException;
 import com.example.spring.boot.model.Semester;
@@ -23,6 +24,9 @@ public class SemesterServiceImpl implements SemesterService {
 
 	@Autowired
 	private SemesterDAO semesterDAO;
+	
+	@Autowired
+	private ModelMapper modelMapper;
 
 	@Autowired
 	private ModelMapper modelMapper;

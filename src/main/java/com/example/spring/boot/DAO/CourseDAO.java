@@ -8,10 +8,7 @@ public interface CourseDAO {
 	public Course addCourse(Course course);
 	public Course updateCourse(Course course);
 	public void deleteCourse(int courseID);
-	public Course getCourse(int courseID);
+	Course getCourse(int courseID);
 	public List<Course> getAllCourses();
-	
-	
-	
 	
 }
