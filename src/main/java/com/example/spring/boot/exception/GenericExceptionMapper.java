@@ -27,7 +27,7 @@ public class GenericExceptionMapper extends ResponseEntityExceptionHandler {
 	protected ResponseEntity<ExceptionEntity> handleDataIntegrityViolationException(DataAccessException ex, WebRequest request) throws URISyntaxException {
 		// LOGGER.error(ex.getMessage(), ex);
 		return handleException(ex.getRootCause().getMessage() , HttpStatus.CONFLICT,
-				new URI("http://studentRegistrationSystem/DuplicateResourceException"));
+				new URI("http://studentRegistrationSystem/DataAccessException"));
 	}
 
 	@ExceptionHandler(value = { DuplicateResourceException.class })
