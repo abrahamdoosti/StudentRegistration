@@ -52,17 +52,6 @@ public class StudentController {
 			throws ResourceNotFoundException {
 		return studentService.unregisterStudent(id);
 	}
-
-	@RequestMapping(value = "/{studentId}/courseGrade", method = RequestMethod.GET)
-	public ResponseEntity<List<StudentCourseSemesterGradeDto>> getStudentCourseSemesterGrade(
-			@PathVariable("studentId") final Long studentId) throws ResourceNotFoundException {
-		RestTemplate restTemplate = new RestTemplate();
-		HttpHeaders headers = new HttpHeaders();
-		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-		HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
-		return restTemplate.exchange(AdminConfig.BASE_URI + "/courseGrade/" + studentId, HttpMethod.GET, entity,
-				new ParameterizedTypeReference<List<StudentCourseSemesterGradeDto>>() {
-				});
-	}
+	
 
 }
