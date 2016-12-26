@@ -41,9 +41,6 @@ public class StudentCourseSemesterGradeServiceImpl implements StudentCourseSemes
 	@Autowired
 	private ModelMapper modelMapper;
 
-	@Autowired
-	private ModelMapper modelMapper;
-
 	@Override
 	public ResponseEntity<StudentCourseSemesterGrade> getStudentCourseSemesterGrade(Long id)
 			throws ResourceNotFoundException {
@@ -73,14 +70,17 @@ public class StudentCourseSemesterGradeServiceImpl implements StudentCourseSemes
 	}
 
 	@Override
-	public ResponseEntity<StudentCourseSemesterGradeDto> enrollStudent(final Long studentId, final int couresId,final int semisterId) {
+	public ResponseEntity<StudentCourseSemesterGradeDto> enrollStudent(final Long studentId, final int couresId,
+			final int semisterId) {
 		StudentCourseSemesterGrade studentCourseSemesterGrade = new StudentCourseSemesterGrade();
 		studentCourseSemesterGrade.setStudent(studentDAO.getStudent(studentId));
 		studentCourseSemesterGrade.setCourse(courseDAO.getCourse(couresId));
 		studentCourseSemesterGrade.setSemester(semesterDAO.getSemester(semisterId));
-		return new ResponseEntity<StudentCourseSemesterGradeDto>(modelMapper.map(studentCourseSemesterGradeDAO.save(studentCourseSemesterGrade),StudentCourseSemesterGradeDto.class),HttpStatus.CREATED);
+		return new ResponseEntity<StudentCourseSemesterGradeDto>(
+				modelMapper.map(studentCourseSemesterGradeDAO.save(studentCourseSemesterGrade),
+						StudentCourseSemesterGradeDto.class),
+				HttpStatus.CREATED);
 	}
-
 
 	@Override
 	public ResponseEntity<StudentCourseSemesterGradeDto> updateStudentCourseSemesterGrade(final Long studentId,
@@ -93,9 +93,12 @@ public class StudentCourseSemesterGradeServiceImpl implements StudentCourseSemes
 		studentCourseSemesterGrade.setScsgId(studentCourseSemesterGradeRequestDto.getScsgId());
 		studentCourseSemesterGrade.setStudent(studentDAO.getStudent(studentId));
 		studentCourseSemesterGrade.setCourse(courseDAO.getCourse(studentCourseSemesterGradeRequestDto.getCourseID()));
-		studentCourseSemesterGrade.setSemester(semesterDAO.getSemester(studentCourseSemesterGradeRequestDto.getSemesterId()));
+		studentCourseSemesterGrade
+				.setSemester(semesterDAO.getSemester(studentCourseSemesterGradeRequestDto.getSemesterId()));
 		studentCourseSemesterGrade.setGrade(studentCourseSemesterGradeRequestDto.getGrade());
-		return new ResponseEntity<StudentCourseSemesterGradeDto>((modelMapper.map(studentCourseSemesterGradeDAO.updateStudentCourseSemesterGrade(studentCourseSemesterGrade),StudentCourseSemesterGradeDto.class)), HttpStatus.OK);
+		return new ResponseEntity<StudentCourseSemesterGradeDto>((modelMapper.map(
+				studentCourseSemesterGradeDAO.updateStudentCourseSemesterGrade(studentCourseSemesterGrade),
+				StudentCourseSemesterGradeDto.class)), HttpStatus.OK);
 	}
 
 	@Override
@@ -115,9 +118,8 @@ public class StudentCourseSemesterGradeServiceImpl implements StudentCourseSemes
 				|| (student.getStudentCourseSemesterGrade().size() == 0))) {
 			throw new ResourceNotFoundException();
 		}
-		student.getStudentCourseSemesterGrade().forEach(entity -> 
-			studentCourseSemesterGradeDtos.add(modelMapper.map(entity, StudentCourseSemesterGradeDto.class))
-		);
+		student.getStudentCourseSemesterGrade().forEach(entity -> studentCourseSemesterGradeDtos
+				.add(modelMapper.map(entity, StudentCourseSemesterGradeDto.class)));
 		return new ResponseEntity<List<StudentCourseSemesterGradeDto>>(studentCourseSemesterGradeDtos,
 				HttpStatus.FOUND);
 	}
