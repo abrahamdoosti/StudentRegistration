@@ -1,63 +1,78 @@
 package com.example.spring.boot.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import com.example.spring.boot.StudentDAO.StudentDAO;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.example.spring.boot.DAO.StudentDAO;
 import com.example.spring.boot.exception.DuplicateResourceException;
 import com.example.spring.boot.exception.ResourceNotFoundException;
 import com.example.spring.boot.model.Student;
+import com.example.spring.boot.request.dto.StudentRequestDto;
+import com.example.spring.boot.response.dto.StudentDto;
 
 @Service
+@Transactional
 public class StudentServiceImpl implements StudentService {
 
 	@Autowired
 	private StudentDAO studentDAO;
-
-	@Override
-	public ResponseEntity<Student> getStudent(int id) throws ResourceNotFoundException {
-		Student student = studentDAO.getStudent(id);
-		if (student == null) 
-			throw new ResourceNotFoundException(Student.class);
-		
-		return new ResponseEntity<Student>(student, HttpStatus.FOUND);
-	}
-
-	@Override
-	public ResponseEntity<List<Student>> getAllStudents() throws ResourceNotFoundException {
-		if(studentDAO.getAllStudents().isEmpty())
-			throw new ResourceNotFoundException(Student.class);
-		return new ResponseEntity<List<Student>>( studentDAO.getAllStudents(),HttpStatus.OK);
-	}
-
-	@Override
-	public ResponseEntity<Student> registerStudent(Student student) throws DuplicateResourceException {		
-		if (!studentDAO.getAllStudents().contains(student)) {
-			return new ResponseEntity<Student>(studentDAO.saveStudent(student), HttpStatus.CREATED);
-		}
-		throw new DuplicateResourceException(Student.class);
-		
-	}
-
-	@Override
-	public ResponseEntity<Student> updateStudent(int id, Student student) throws ResourceNotFoundException,DuplicateResourceException {
-		student.setId(id);
-		Student oldStudent=studentDAO.getStudent(student.getId());
-		if(oldStudent==null){
-			throw new ResourceNotFoundException(Student.class);
-		}
-		else if(studentDAO.getAllStudents().contains(student)){
+	
+	@Autowired
+	private ModelMapper modelMapper;
+	
+	@Override	
+	public ResponseEntity<StudentDto> registerStudent(StudentRequestDto studentRequestDto) throws DuplicateResourceException {
+		try {
+			Student student = modelMapper.map(studentRequestDto, Student.class); 
+			return new ResponseEntity<StudentDto>(modelMapper.map(studentDAO.save(student) , StudentDto.class), HttpStatus.CREATED);
+		} catch (Exception ex) {
 			throw new DuplicateResourceException(Student.class);
 		}
-		return new ResponseEntity<Student>(studentDAO.updateStudent(student), HttpStatus.OK);
 	}
-
+	@Override	
+	public ResponseEntity<StudentDto> getStudent(Long id) throws ResourceNotFoundException {		
+		Student student = studentDAO.getStudent(id);
+		if (student == null)
+			throw new ResourceNotFoundException(Student.class);
+		return new ResponseEntity<StudentDto>(modelMapper.map(student, StudentDto.class), HttpStatus.FOUND);
+	}
+	
 	@Override
-	public ResponseEntity<Student> unregisterStudent(int id) {
-		return new ResponseEntity<Student>(studentDAO.deleteStudent(id), HttpStatus.NO_CONTENT);
+	public ResponseEntity<List<StudentDto>> getAllStudents() throws ResourceNotFoundException {
+		// TODO Auto-generated method stub
+		List<Student> students=studentDAO.findAll();
+		if(students==null||students.size()==0){
+			throw new ResourceNotFoundException();
+		}	
+		List<StudentDto> dtos = new ArrayList<>(); 
+		students.forEach(entity -> {
+			dtos.add(modelMapper.map(entity, StudentDto.class));
+		});
+		
+		return new ResponseEntity<List<StudentDto>>(dtos, HttpStatus.FOUND);
 	}
+	
+	@Override
+	public ResponseEntity<StudentDto> updateStudent(Long id, StudentRequestDto studentRequestDto) {
+		studentRequestDto.setStudentId(id);
+		Student student=modelMapper.map(studentRequestDto, Student.class);
+		return new ResponseEntity<StudentDto>(modelMapper.map(studentDAO.updateStudent(student), StudentDto.class), HttpStatus.OK);
+	}
+	
+	@Override
+	public ResponseEntity<Void> unregisterStudent(Long id) throws ResourceNotFoundException {
+		if(studentDAO.getStudent(id)==null )
+			throw new ResourceNotFoundException();
+		studentDAO.delete(id);
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+	}
+	
 
 }

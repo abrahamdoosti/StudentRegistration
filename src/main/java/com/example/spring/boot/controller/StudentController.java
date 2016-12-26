@@ -14,38 +14,44 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.spring.boot.exception.DuplicateResourceException;
 import com.example.spring.boot.exception.ResourceNotFoundException;
 import com.example.spring.boot.model.Student;
+import com.example.spring.boot.request.dto.StudentRequestDto;
+import com.example.spring.boot.response.dto.StudentDto;
 import com.example.spring.boot.service.StudentService;
 
 @RestController
 @RequestMapping(value = "/student", produces = MediaType.APPLICATION_JSON_VALUE)
 public class StudentController {
 
-	@Autowired	
+	@Autowired
 	private StudentService studentService;
-
+	
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<Student>> getAllStudents() throws ResourceNotFoundException {
-		return  studentService.getAllStudents();
+	public ResponseEntity<List<StudentDto>> getAllStudents() throws ResourceNotFoundException {
+		return studentService.getAllStudents();
 	}
 
 	@RequestMapping(value = "/{studentId}", method = RequestMethod.GET)
-	public ResponseEntity<Student> getStudent(@PathVariable("studentId") final int id) throws ResourceNotFoundException {
+	public ResponseEntity<StudentDto> getStudent(@PathVariable("studentId") final Long id)
+			throws ResourceNotFoundException {
 		return studentService.getStudent(id);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Student> createStudent(@RequestBody final Student student) throws  DuplicateResourceException {
-		return studentService.registerStudent(student);
+	public ResponseEntity<StudentDto> createStudent(@RequestBody final StudentRequestDto studentDto) throws DuplicateResourceException {
+		return studentService.registerStudent(studentDto);
 	}
-	
+
 	@RequestMapping(value = "/{studentId}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Student> updateStudent(@RequestBody Student student,@PathVariable("studentId") final int studentId) throws ResourceNotFoundException, DuplicateResourceException {
-		return studentService.updateStudent(studentId, student);
+	public ResponseEntity<StudentDto> updateStudent(@RequestBody StudentRequestDto studentRequestDto,
+			@PathVariable("studentId") final Long studentId) {
+		return studentService.updateStudent(studentId, studentRequestDto);
 	}
-	
+
 	@RequestMapping(value = "/{studentId}", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Student> deleteStudent(@PathVariable("studentId") final int id) {		
+	public ResponseEntity<Void> deleteStudent(@PathVariable("studentId") final Long id)
+			throws ResourceNotFoundException {
 		return studentService.unregisterStudent(id);
 	}
+	
 
 }
