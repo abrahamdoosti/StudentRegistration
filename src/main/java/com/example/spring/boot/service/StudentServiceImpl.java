@@ -49,7 +49,7 @@ public class StudentServiceImpl implements StudentService {
 		// TODO Auto-generated method stub
 		List<Student> students=studentDAO.findAll();
 		if(students==null||students.size()==0){
-			throw new ResourceNotFoundException();
+			throw new ResourceNotFoundException(Student.class);
 		}	
 		List<StudentDto> dtos = new ArrayList<>(); 
 		students.forEach(entity -> {

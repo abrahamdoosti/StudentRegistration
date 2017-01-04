@@ -9,10 +9,10 @@ import org.springframework.web.client.RestTemplate;
 //@EnableWebMvc
 public class WebConfig  {
 
-//	@Override
-//	public void addCorsMappings(CorsRegistry registry) {
-//		registry.addMapping("/**");
-//	}
+	@Override
+	public void addCorsMappings(CorsRegistry registry) {
+		registry.addMapping("/**");
+	}
 	
 	@Bean
 	public RestTemplate restTemplate(){
